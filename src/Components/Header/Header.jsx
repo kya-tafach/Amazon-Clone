@@ -1,22 +1,32 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { IoSearch } from "react-icons/io5";
 import { IoCartOutline } from "react-icons/io5";
 import { IoLocationOutline } from "react-icons/io5"
+//  import LowerHeader from './LowerHeader';
 
 import classes from "./Header.module.css"
-// import { Link } from 'react-router-dom';
+ import { Link } from 'react-router-dom';
 import { BiCartDownload } from "react-icons/bi";
+import LowerHeader from './LowerHeader';
+import { DataContext } from '../DataProvider/DataProvider';
+
+
 function Header() {
+    const [{ user, basket }, dispatch] = useContext(DataContext);
+    const totalItem = basket?.reduce((amount, item) => {
+      return item.amount + amount;
+    }, 0);
   return (
    
-      <section>  
+    <section> 
         <section className={classes.fixed}>
+              
             <div className={classes.header__container}>
                 {/* log */}
                 <div className={classes.logo__container}>
-                <a to="/">
+                <Link to="/">
                     <img src="https://pngimg.com/uploads/amazon/amazon_PNG11.png" alt="amazon logo" />
-                </a>
+                </Link>
                
                 {/* delivery */}
                 {/* <span>icon</span> */}
@@ -44,7 +54,7 @@ function Header() {
             </div>
             {/* right side a */}
             <div className={classes.order__container}>
-                    <a className={classes.language}>
+                    <Link to="/" className={classes.language}>
                 <img
                 src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/1024px-Flag_of_the_United_States.svg.png"
                 alt=""
@@ -57,37 +67,41 @@ function Header() {
                         <option value="">Ch</option>
                         <option value="">It</option>
                     </select>
-                    </a>    
+                    </Link >    
                     {/* three components */}
-                     <a  href="" >
+                     <Link to="/auth" >
                      <div>
                         <p>sign in</p>
                         <span>account & list</span>
                      </div>
-                     </a>
+                     </Link >
                      {/* order */}
-                     <a href="">
+                     <Link  to="/orders">
                      <div >
                         <p>Returns</p>
                         <span>& orders</span>
                      </div>
-                     </a>
+                     </Link >
                      {/* cart */}
                     
-                     <a href="" className={classes.cart}>
+                     <Link  to="/cart" className={classes.cart}>
                      <div>
-                      
+                    
                         <BiCartDownload  size = {35}/>
-                        <span>0</span>
+                        
+                        <span>{totalItem}</span>
+                       
                      </div>
-                     </a>
+                     </Link >
                 </div>
 
                 </div>
       </section>
+      <LowerHeader />
     </section>
+    
   
   )
 }
 
-export default Header
+ export default Header
